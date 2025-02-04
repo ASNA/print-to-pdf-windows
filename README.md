@@ -4,8 +4,14 @@ or the "Microsoft Print to PDF" print driver in a Windows application.
 There are special considerations for using the MS PDF driver with a 
 Web application. [See this ariticle for using the MS PDF driver 
 with an AVR web app.](https://www.asna.com/en/kb/windows-native-pdf-driver)
+
+I like to isolate printer code in a class for each print file. In this example, the 
+`CustomerReport` does that. You don't have to use a class to use the techniques 
+shown in this example. You can copy code from the class and copy it inline 
+into your code. That said, one of these days you'll be very grateful then if you 
+take the time to separate this code initially! 
  
-Use the constructor that requires one argument to print to a physical 
+Use the `CustomerReport` constructor that requires two arguments to print to a physical 
 printer or use the constructor that requires three arguements to print
 to a PDF file. 
                                                                                           
