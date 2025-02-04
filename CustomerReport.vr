@@ -1,0 +1,210 @@
+﻿Using System
+Using System.IO 
+Using System.Text
+Using System.Text.RegularExpressions
+
+DclNamespace Windows_PDF_print_driver
+
+/*
+ |
+ | This class prints an ASNA Print File to either a physical printer 
+ | or the "Microsoft Print to PDF" print driver in a Windows application. 
+ | 
+ | There are special considerations for using the MS PDF driver with a 
+ | Web application. See this ariticle for using the MS PDF driver 
+ | with an AVR web app: https://www.asna.com/en/kb/windows-native-pdf-driver.
+ |
+ | Use the constructor that requires one argument to print to a physical 
+ | printer or use the constructor that requires three arguements to print
+ | to a PDF file. 
+ |                                                                                           
+ | To print to a physical printer:
+ |   DclFld cr Type(CustomerReport) 	
+ |   DclFld PrinterName Type(*String) 
+ |   DclFld UsePrintSetup Type(*Boolean) 
+ |
+ |   PrinterName = "HP LaserJet 1020 (redirected 2)"
+ |   UsePrintSetup = *True 
+ |   // If UsePrintSetup is *True then printer setup is shown. Note that you cannot 
+ |   // show the printer setup in a Web app. The entire printer configuration must 
+ |   // specified programmatically in that case. 
+ |
+ |   cr = *NEW CustomerReport(PrinterName, UsePrintSetUp) 
+ |   cr.Print()
+ |	 Try 
+ | 		 cr.Print()
+ |		 MsgBox String.Format("File printed") 
+ |	 Catch Type(Exception) Name(ex)
+ |		 MsgBox String.Format("ERROR :" + ex.Message) 
+ |	 EndTry 
+ |
+ | To print to a PDF file with the MS native PDF print driver:
+ |   DclFld cr Type(CustomerReport) 	
+ |   DclFld PrinterName Type(*String) 
+ |
+ |   cr = *NEW CustomerReport(PrinterName) 
+ |
+ |   DclFld PrinterName Type(*String) 
+ |	 DclFld PDFOutputFolder Type(*String) 
+ |	 DclFld PDFFileName Type(*String) 
+ |
+ |	 PrinterName = "Microsoft Print to PDF"
+ |	 PDFOutputFolder = "C:\Users\thumb\Documents\projects\avr\pdf-files"
+ |
+ |	 // Existing PDF files are overwritten! 
+ |   PDFFileName = "test.pdf"
+ |
+ |	 DclFld cr Type(CustomerReport) 	
+ |		
+ |	 cr = *NEW CustomerReport(PrinterName, PDFOutputFolder, PDFFileName) 
+ |	 Try 
+ | 		 cr.Print()
+ |		 MsgBox String.Format("File {0} created in {1}", PDFFileName, PDFOutputFolder) 
+ |	 Catch Type(Exception) Name(ex)
+ |		 MsgBox String.Format("ERROR :" + ex.Message) 
+ |	 EndTry 
+ |
+ | When printing to the MS native PDF driver, the printer name
+ | must be:
+ |      "Microsoft Print to PDF"
+ | If you have trouble with this, use MS Word to save a sample document 
+ | the MS PDF driver to ensure the driver is available. It may need
+ | to be added with  "Turn Windows features on or off."
+ |
+ */
+BegClass CustomerReport Access(*Public)
+
+    DclDB Name(pgmDB) DBName("*Public/dg-local-db")
+
+    DclDiskFile Cust +
+        Type(*Input) +
+        Org(*Indexed) +
+        Prefix(Cust_) +
+        File("Examples/CMastNewL2") +
+        DB(pgmDB) +
+        ImpOpen(*No) 
+
+    DclPrintFile MyPrint +
+        DB (pgmDB) + 
+        File ("Examples/CustList") + 
+        ImpOpen (*No) 
+    
+    DclProp OutputDirectory Type (*String) 
+    DclProp OutputFullFileName Type(*String) Access(*Public) 
+    DclProp PrinterName Type (*String) 
+    DclProp IsPdf Type (*Boolean) 
+
+    BegSr OpenData Access (*Private) 
+        Connect PgmDB
+        Open Cust
+
+        MyPrint.Printer = *This.PrinterName
+        If (IsPdf) 
+            MyPrint.PrintToFileName = *This.OutputFullFileName
+        EndIf             
+        Open MyPrint
+    EndSr
+
+    BegSr CloseData Access (*Private) 
+        Close Cust
+        Close MyPrint
+        Disconnect PgmDB
+    EndSr
+
+    BegSr Print Access(*Public) 
+        OpenData()
+        WriteReportFormats()
+        CloseData()
+
+        // Pausing a bit gives the printer process its operations. 
+        // When printing to PDF this ensures the PDF file is closed 
+        // before continuing. 
+        //
+        // You might need to experiment a bit with the sleep value (in ms) 
+        // for your environment. For the Windows environment this may 
+        // not be needed at all in your enviroment.
+        Sleep(500)
+    EndSr
+
+    BegSr WriteReportformats Access (*Private) 
+        DclFld StartingfooterSize Type (*Integer4) 
+        DclFld NeedHeader Type (*Boolean) 
+
+        // There are 254 print units in an inch. 
+        DclConst ONE_INCH Value(254)
+
+        StartingfooterSize = MyPrint.FooterSize
+        NeedHeader = *True
+
+        DclFld Counter Type(*Integer4) 
+
+        Read Cust
+        DoWhile (NOT Cust.IsEof)
+            Counter += 1
+            CustomerName = Cust_CMName
+
+            If (NeedHeader) 
+                Write Heading
+                NeedHeader = *False
+            EndIf
+
+            Write Detail
+            
+            // This results in a 1.25 inch footer. 
+            If (MyPrint.FooterSize <= ONE_INCH * 1.25)
+                Write Footer
+                NeedHeader = *True
+                StartingFooterSize = MyPrint.FooterSize
+            Endif 
+
+            // An arbitrary value to limit pages printed
+            // for testing.
+            If Counter = 75 
+                Leave 
+            EndIf
+
+            Read Cust
+        EndDo
+
+        If (StartingfooterSize <> MyPrint.FooterSize) 
+            Write Footer
+        EndIf
+    EndSr
+
+    BegConstructor Access(*Public) 
+        //
+        // Constructor for printing to printer.
+        //
+        DclSrParm PrinterName Type(*String) 
+        DclSrParm UsePrintSetup Type(*Boolean) 
+
+        MyPrint.PrintSetup = UsePrintSetup
+
+        *This.PrinterName =	PrinterName
+        *This.IsPdf = *False
+    EndConstructor
+
+    BegConstructor Access(*Public) 
+        //
+        // Constructor for printing to PDF.
+        //
+        DclSrParm PrinterName Type(*String)
+        DclSrParm PDFOutputFolder Type(*String) 
+        DclSrParm PDFFileName Type(*String) 
+
+        DclConst ERROR_MESSAGE Value('Directory does not exist: {0}.') 
+
+        *This.PrinterName = PrinterName
+        *This.IsPdf = *True
+                
+        *This.OutputDirectory = PDFOutputFolder
+        *This.OutputFullFileName = String.Format("{0}\{1}", *This.OutputDirectory, PDFFileName) 
+        
+        // Throw exception if output directory provided doesn't exist.             
+        If NOT Directory.Exists(*This.OutputDirectory)
+            Throw *New System.ArgumentException(String.Format(ERROR_MESSAGE, *This.OutputDirectory))
+        EndIf
+        
+    EndConstructor
+
+EndClass

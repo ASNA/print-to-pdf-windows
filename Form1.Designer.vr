@@ -1,0 +1,61 @@
+﻿BegClass Form1 Partial(*Yes)
+
+	// Required method for Designer support - do not modify
+	// the contents of this method with the code editor.
+	BegSr InitializeComponent
+		*this.buttonPrintToPDF = *new System.Windows.Forms.Button()
+		*this.buttonPrintToPrinter = *new System.Windows.Forms.Button()
+		*this.SuspendLayout()
+		//
+		//buttonPrintToPDF
+		//
+		*this.buttonPrintToPDF.Font = *new System.Drawing.Font("Microsoft Sans Serif", 12, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, (0 *As System.Byte))
+		*this.buttonPrintToPDF.Location = *new System.Drawing.Point(84I, 117I)
+		*this.buttonPrintToPDF.Margin = *new System.Windows.Forms.Padding(4I)
+		*this.buttonPrintToPDF.Name = "buttonPrintToPDF"
+		*this.buttonPrintToPDF.Size = *new System.Drawing.Size(284I, 84I)
+		*this.buttonPrintToPDF.TabIndex = 0I
+		*this.buttonPrintToPDF.Text = "Print report to PDF"
+		*this.buttonPrintToPDF.UseVisualStyleBackColor = *True
+		//
+		//buttonPrintToPrinter
+		//
+		*this.buttonPrintToPrinter.Font = *new System.Drawing.Font("Microsoft Sans Serif", 12, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, (0 *As System.Byte))
+		*this.buttonPrintToPrinter.Location = *new System.Drawing.Point(84I, 223I)
+		*this.buttonPrintToPrinter.Margin = *new System.Windows.Forms.Padding(4I)
+		*this.buttonPrintToPrinter.Name = "buttonPrintToPrinter"
+		*this.buttonPrintToPrinter.Size = *new System.Drawing.Size(284I, 84I)
+		*this.buttonPrintToPrinter.TabIndex = 1I
+		*this.buttonPrintToPrinter.Text = "Print report to printer"
+		*this.buttonPrintToPrinter.UseVisualStyleBackColor = *True
+		//
+		//Form1
+		//
+		*this.AutoScaleDimensions = *new System.Drawing.SizeF(144, 144)
+		*this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+		*this.ClientSize = *new System.Drawing.Size(460I, 443I)
+		*this.Controls.Add(*this.buttonPrintToPrinter)
+		*this.Controls.Add(*this.buttonPrintToPDF)
+		*this.Name = "Form1"
+		*this.Text = "Print to physical printer or PDF"
+		*this.ResumeLayout(*False)
+	EndSr
+	
+	DclFld buttonPrintToPDF Type(System.Windows.Forms.Button) Access(*Private) WithEvents(*Yes)
+	DclFld buttonPrintToPrinter Type(System.Windows.Forms.Button) Access(*Private) WithEvents(*Yes)
+	//Required by the Windows Form Designer
+	DclFld components Type(System.ComponentModel.IContainer) Inz(*Nothing)
+	
+	// Clean up any resources being used.
+	// "disposing" is true if managed resources should be disposed; otherwise, false.
+	BegSr Dispose Access(*Protected) Modifier(*Overrides)
+		DclSrParm disposing Type(*Boolean)
+
+		If (disposing *And (components *NE *Nothing))
+			components.Dispose()
+		EndIf
+			
+		*Base.Dispose(disposing)
+	EndSr
+	
+EndClass
