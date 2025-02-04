@@ -24,10 +24,10 @@ To print to a physical printer:
   cr.Print()
   Try 
       cr.Print()
-	  MsgBox String.Format("File printed") 
+      MsgBox String.Format("File printed") 
   Catch Type(Exception) Name(ex)
 	  MsgBox String.Format("ERROR :" + ex.Message) 
-   EndTry 
+  EndTry 
 ```   
 
 To print to a PDF file with the MS native PDF print driver:
@@ -45,28 +45,28 @@ To print to a PDF file with the MS native PDF print driver:
   PrinterName = "Microsoft Print to PDF"
   PDFOutputFolder = "C:\Users\thumb\Documents\projects\avr\pdf-files"
 
-   // Existing PDF files are overwritten! 
-   PDFFileName = "test.pdf"
+  // Existing PDF files are overwritten! 
+  PDFFileName = "test.pdf"
 
-   DclFld cr Type(CustomerReport) 	
+  DclFld cr Type(CustomerReport) 	
 		
-   cr = *NEW CustomerReport(PrinterName, PDFOutputFolder, PDFFileName) 
-   Try 
-        cr.Print()
-		MsgBox String.Format("File {0} created in {1}", PDFFileName, PDFOutputFolder) 
-    Catch Type(Exception) Name(ex)
-	    MsgBox String.Format("ERROR :" + ex.Message) 
+  cr = *NEW CustomerReport(PrinterName, PDFOutputFolder, PDFFileName) 
+  Try 
+      cr.Print()
+      MsgBox String.Format("File {0} created in {1}", PDFFileName, PDFOutputFolder) 
+   Catch Type(Exception) Name(ex)
+      MsgBox String.Format("ERROR :" + ex.Message) 
    EndTry 
 ```   
 
 When printing to the MS native PDF driver, the printer name
 must be:
 
-     `Microsoft Print to PDF`
+     Microsoft Print to PDF
 
-If you have trouble with this, use MS Word to save a sample document 
+If you have trouble with this code, use MS Word to save a sample document 
 the MS PDF driver to ensure the driver is available. It may need
-to be added with  "Turn Windows features on or off."
+to be added with "Turn Windows features on or off."
 
 You cannot show the printer setup in a Web app. The entire printer configuration must 
 specified programmatically for Web apps. 
