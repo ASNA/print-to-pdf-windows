@@ -68,7 +68,7 @@ To print to a PDF file with the MS native PDF print driver:
 When printing to the MS native PDF driver, the printer name
 must be:
 
-     Microsoft Print to PDF
+    Microsoft Print to PDF
 
 If you have trouble with this code, use MS Word to save a sample document 
 the MS PDF driver to ensure the driver is available. It may need

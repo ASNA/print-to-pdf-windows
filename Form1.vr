@@ -27,6 +27,24 @@ BegClass Form1 Extends(System.Windows.Forms.Form) Access(*Public) Partial(*Yes)
         DclSrParm sender Type(*Object)
         DclSrParm e Type(System.EventArgs)
 
+        PrintToPDF()
+    EndSr 
+
+	BegSr buttonPrintManyPDFs_Click Access(*Private) Event(*this.buttonPrintManyPDFs.Click)
+		DclSrParm sender Type(*Object)
+		DclSrParm e Type(System.EventArgs)
+
+        DclConst TIMES Value(500)
+        DclFld Counter Type(*Integer4) 
+
+        Do FromVal(1) ToVal(TIMES) Index(Counter)                                                     
+            PrintToPDF()
+            System.Threading.Thread.Sleep(1000)
+            *This.Text = String.Format("{0}", Counter.ToString())
+        EndDo 
+	EndSr
+
+    BegSr PrintToPDF 
         DclFld PrinterName Type(*String) 
         DclFld PDFOutputFolder Type(*String) 
         DclFld PDFFileName Type(*String) 
@@ -35,7 +53,7 @@ BegClass Form1 Extends(System.Windows.Forms.Form) Access(*Public) Partial(*Yes)
         PDFOutputFolder = "C:\Users\thumb\Documents\projects\avr\pdf-files"
 
         // Existing PDF files are overwritten! 
-        PDFFileName = "test.pdf"
+        PDFFileName = String.Format("T-{0}.pdf", DateTime.Now().ToString("yyyy-MM-dd-HH-mm-ss-ffff"))
 
         DclFld cr Type(CustomerReport) 	
         
@@ -43,7 +61,7 @@ BegClass Form1 Extends(System.Windows.Forms.Form) Access(*Public) Partial(*Yes)
 
         Try 
             cr.Print()
-            MsgBox String.Format("File {0} created in {1}", PDFFileName, PDFOutputFolder) 
+            //MsgBox String.Format("File {0} created in {1}", PDFFileName, PDFOutputFolder) 
         Catch Type(Exception) Name(ex)
             MsgBox String.Format("ERROR :" + ex.Message) 
         EndTry 
@@ -71,4 +89,5 @@ BegClass Form1 Extends(System.Windows.Forms.Form) Access(*Public) Partial(*Yes)
         EndTry 
     EndSr
     
+	
 EndClass

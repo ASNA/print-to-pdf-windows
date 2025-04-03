@@ -5,15 +5,16 @@
 	BegSr InitializeComponent
 		*this.buttonPrintToPDF = *new System.Windows.Forms.Button()
 		*this.buttonPrintToPrinter = *new System.Windows.Forms.Button()
+		*this.buttonPrintManyPDFs = *new System.Windows.Forms.Button()
 		*this.SuspendLayout()
 		//
 		//buttonPrintToPDF
 		//
 		*this.buttonPrintToPDF.Font = *new System.Drawing.Font("Microsoft Sans Serif", 12, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, (0 *As System.Byte))
-		*this.buttonPrintToPDF.Location = *new System.Drawing.Point(84I, 117I)
-		*this.buttonPrintToPDF.Margin = *new System.Windows.Forms.Padding(4I)
+		*this.buttonPrintToPDF.Location = *new System.Drawing.Point(98I, 136I)
+		*this.buttonPrintToPDF.Margin = *new System.Windows.Forms.Padding(5I)
 		*this.buttonPrintToPDF.Name = "buttonPrintToPDF"
-		*this.buttonPrintToPDF.Size = *new System.Drawing.Size(284I, 84I)
+		*this.buttonPrintToPDF.Size = *new System.Drawing.Size(331I, 98I)
 		*this.buttonPrintToPDF.TabIndex = 0I
 		*this.buttonPrintToPDF.Text = "Print report to PDF"
 		*this.buttonPrintToPDF.UseVisualStyleBackColor = *True
@@ -21,21 +22,34 @@
 		//buttonPrintToPrinter
 		//
 		*this.buttonPrintToPrinter.Font = *new System.Drawing.Font("Microsoft Sans Serif", 12, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, (0 *As System.Byte))
-		*this.buttonPrintToPrinter.Location = *new System.Drawing.Point(84I, 223I)
-		*this.buttonPrintToPrinter.Margin = *new System.Windows.Forms.Padding(4I)
+		*this.buttonPrintToPrinter.Location = *new System.Drawing.Point(98I, 356I)
+		*this.buttonPrintToPrinter.Margin = *new System.Windows.Forms.Padding(5I)
 		*this.buttonPrintToPrinter.Name = "buttonPrintToPrinter"
-		*this.buttonPrintToPrinter.Size = *new System.Drawing.Size(284I, 84I)
+		*this.buttonPrintToPrinter.Size = *new System.Drawing.Size(331I, 98I)
 		*this.buttonPrintToPrinter.TabIndex = 1I
 		*this.buttonPrintToPrinter.Text = "Print report to printer"
 		*this.buttonPrintToPrinter.UseVisualStyleBackColor = *True
 		//
+		//buttonPrintManyPDFs
+		//
+		*this.buttonPrintManyPDFs.Font = *new System.Drawing.Font("Microsoft Sans Serif", 12, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, (0 *As System.Byte))
+		*this.buttonPrintManyPDFs.Location = *new System.Drawing.Point(98I, 248I)
+		*this.buttonPrintManyPDFs.Margin = *new System.Windows.Forms.Padding(5I)
+		*this.buttonPrintManyPDFs.Name = "buttonPrintManyPDFs"
+		*this.buttonPrintManyPDFs.Size = *new System.Drawing.Size(331I, 98I)
+		*this.buttonPrintManyPDFs.TabIndex = 2I
+		*this.buttonPrintManyPDFs.Text = "Print many to PDF"
+		*this.buttonPrintManyPDFs.UseVisualStyleBackColor = *True
+		//
 		//Form1
 		//
-		*this.AutoScaleDimensions = *new System.Drawing.SizeF(144, 144)
+		*this.AutoScaleDimensions = *new System.Drawing.SizeF(168, 168)
 		*this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-		*this.ClientSize = *new System.Drawing.Size(460I, 443I)
+		*this.ClientSize = *new System.Drawing.Size(537I, 517I)
+		*this.Controls.Add(*this.buttonPrintManyPDFs)
 		*this.Controls.Add(*this.buttonPrintToPrinter)
 		*this.Controls.Add(*this.buttonPrintToPDF)
+		*this.Margin = *new System.Windows.Forms.Padding(4I)
 		*this.Name = "Form1"
 		*this.Text = "Print to physical printer or PDF"
 		*this.ResumeLayout(*False)
@@ -43,6 +57,7 @@
 	
 	DclFld buttonPrintToPDF Type(System.Windows.Forms.Button) Access(*Private) WithEvents(*Yes)
 	DclFld buttonPrintToPrinter Type(System.Windows.Forms.Button) Access(*Private) WithEvents(*Yes)
+	DclFld buttonPrintManyPDFs Type(System.Windows.Forms.Button) Access(*Private) WithEvents(*Yes)
 	//Required by the Windows Form Designer
 	DclFld components Type(System.ComponentModel.IContainer) Inz(*Nothing)
 	
